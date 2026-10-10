@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>校园帮帮｜校园跑腿互助平台</title>
+<style>
+:root{--bg:#f7f8fb;--card:#fff;--text:#1f2329;--muted:#717780;--brand:#ffb000;--brand2:#ff7a00;--line:#eceef2;--ok:#15a05c}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text)}
+header{position:sticky;top:0;z-index:9;background:rgba(255,255,255,.95);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+.nav{max-width:1120px;margin:auto;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
+.logo{font-weight:800;font-size:22px}.logo b{color:var(--brand2)} .navlinks{display:flex;gap:22px;color:#555;font-size:14px}
+.hero{max-width:1120px;margin:34px auto 20px;padding:0 20px;display:grid;grid-template-columns:1.2fr .8fr;gap:22px}
+.heroBox{background:linear-gradient(135deg,#fff7dc,#fff);border:1px solid #ffe5a3;border-radius:22px;padding:34px}
+h1{font-size:38px;line-height:1.2;margin:0 0 12px}.sub{color:var(--muted);line-height:1.8}.cta{display:flex;gap:12px;margin-top:22px}
+button,.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:700;cursor:pointer}.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff}.ghost{background:#fff;border:1px solid var(--line)}
+.stat{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat>div{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px}.num{font-size:28px;font-weight:800}.label{color:var(--muted);font-size:13px;margin-top:4px}
+main{max-width:1120px;margin:auto;padding:0 20px 50px}.tabs{display:flex;gap:10px;margin:24px 0}.tab{padding:10px 16px;border-radius:999px;background:#fff;border:1px solid var(--line);cursor:pointer}.tab.active{background:#222;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(31,35,41,.04)}
+.badge{display:inline-block;font-size:12px;padding:5px 9px;border-radius:999px;background:#fff4d6;color:#a95c00}.price{font-size:24px;font-weight:800;color:var(--brand2)}.meta{color:var(--muted);font-size:13px;line-height:1.8}.title{font-size:17px;font-weight:800;margin:10px 0}.cardfoot{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+.sectionTitle{display:flex;justify-content:space-between;align-items:end;margin:30px 0 14px}.sectionTitle h2{margin:0}.sectionTitle p{margin:0;color:var(--muted);font-size:13px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:20;align-items:center;justify-content:center;padding:16px}.modal.show{display:flex}.panel{width:min(560px,100%);background:#fff;border-radius:20px;padding:22px}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px;margin:6px 0 12px;font:inherit}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.credit{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.score{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;background:#fff2cf;font-size:24px;font-weight:800;color:#a76000}
+.toast{position:fixed;right:20px;bottom:20px;background:#222;color:#fff;padding:12px 16px;border-radius:12px;display:none;z-index:30}
+footer{padding:26px;text-align:center;color:var(--muted);font-size:12px}
+@media(max-width:820px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.navlinks{display:none}h1{font-size:31px}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="logo">校园<b>帮帮</b></div><div class="navlinks"><span>任务大厅</span><span>发布任务</span><span>我的订单</span><span>信用中心</span></div><button class="primary" onclick="openModal()">发布任务</button></div></header>
+
+<section class="hero">
+  <div class="heroBox">
+    <div class="badge">同校互助 · 更可信</div>
+    <h1>校园小事，<br/>交给顺路的同学。</h1>
+    <div class="sub">代取快递、代买物品、代占座、打印取件……发布需求，附近同学即可接单。任务完成后双方互评，持续积累校园信用。</div>
+    <div class="cta"><button class="primary" onclick="openModal()">立即发布</button><button class="ghost" onclick="document.getElementById('hall').scrollIntoView({behavior:'smooth'})">看看任务</button></div>
+  </div>
+  <div class="stat">
+    <div><div class="num" id="taskNum">12</div><div class="label">今日可接任务</div></div>
+    <div><div class="num">98%</div><div class="label">按时完成率</div></div>
+    <div><div class="num">4.9</div><div class="label">平均互评分</div></div>
+    <div><div class="num">92</div><div class="label">我的校园信用</div></div>
+  </div>
+</section>
+
+<main>
+  <div class="sectionTitle" id="hall"><div><h2>任务大厅</h2><p>优先展示同校、近距离、即将截止的任务</p></div><p>安全提示：线下交易请确认身份与物品</p></div>
+  <div class="tabs">
+    <div class="tab active" onclick="filterTasks('全部',this)">全部</div>
+    <div class="tab" onclick="filterTasks('取快递',this)">取快递</div>
+    <div class="tab" onclick="filterTasks('代买',this)">代买</div>
+    <div class="tab" onclick="filterTasks('其他',this)">其他</div>
+  </div>
+  <div class="grid" id="taskGrid"></div>
+
+  <div class="sectionTitle"><div><h2>信用中心</h2><p>让互助建立在可追溯的信任上</p></div></div>
+  <div class="credit">
+    <div class="score">92</div>
+    <div style="flex:1"><b>信用良好</b><div class="meta">完成 18 单 · 好评率 100% · 无爽约记录<br/>完成任务、准时履约、获得好评均可提升信用；取消接单或被投诉会影响信用。</div></div>
+    <div class="badge">可信用户</div>
+  </div>
+</main>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="panel">
+    <h2 style="margin-top:0">发布跑腿任务</h2>
+    <div class="row">
+      <div><label>任务类型</label><select id="type"><option>取快递</option><option>代买</option><option>打印取件</option><option>其他</option></select></div>
+      <div><label>酬金（元）</label><input id="price" type="number" min="1" value="5"/></div>
+    </div>
+    <label>任务标题</label><input id="title" placeholder="如：帮取南门菜鸟驿站快递"/>
+    <div class="row">
+      <div><label>取件/起点</label><input id="from" placeholder="如：南门菜鸟驿站"/></div>
+      <div><label>送达/终点</label><input id="to" placeholder="如：3号宿舍楼"/></div>
+    </div>
+    <label>补充说明</label><textarea id="desc" rows="3" placeholder="时间要求、物品大小、联系方式等"></textarea>
+    <div style="display:flex;gap:10px;justify-content:flex-end"><button class="ghost" onclick="closeModal()">取消</button><button class="primary" onclick="publish()">确认发布</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<footer>校园帮帮 · 仅用于校园互助产品原型展示</footer>
+
+<script>
+const seed=[
+{id:1,type:'取快递',title:'帮取南门菜鸟驿站快递',from:'南门菜鸟驿站',to:'3号宿舍楼',price:6,desc:'小件，今晚 20:30 前送到即可',status:'可接单'},
+{id:2,type:'代买',title:'食堂顺路带一杯柠檬茶',from:'一食堂',to:'图书馆北门',price:4,desc:'正常糖少冰，19:00 前',status:'可接单'},
+{id:3,type:'其他',title:'帮忙去打印店取装订资料',from:'东门打印店',to:'经管楼',price:8,desc:'资料已付款，报手机号后四位即可',status:'可接单'},
+{id:4,type:'取快递',title:'代取一个中件快递',from:'西区驿站',to:'5号宿舍楼',price:7,desc:'大约鞋盒大小，今晚都可以',status:'可接单'},
+{id:5,type:'代买',title:'超市带两节5号电池',from:'校内超市',to:'实验楼A座',price:5,desc:'任意品牌即可',status:'可接单'},
+{id:6,type:'其他',title:'体育馆帮忙占一个羽毛球场',from:'体育馆',to:'体育馆',price:10,desc:'18:30 到场签到即可',status:'可接单'}
+];
+let tasks=JSON.parse(localStorage.getItem('campus_tasks')||'null')||seed;
+let current='全部';
+function save(){localStorage.setItem('campus_tasks',JSON.stringify(tasks))}
+function render(){const g=document.getElementById('taskGrid');g.innerHTML='';const list=tasks.filter(t=>current==='全部'||t.type===current);document.getElementById('taskNum').textContent=list.length;
+list.forEach(t=>{const d=document.createElement('div');d.className='card';d.innerHTML=`<span class="badge">${t.type}</span><div class="title">${t.title}</div><div class="meta">📍 ${t.from} → ${t.to}<br/>📝 ${t.desc||'无额外说明'}</div><div class="cardfoot"><div class="price">¥${t.price}</div><button class="${t.status==='可接单'?'primary':'ghost'}" ${t.status!=='可接单'?'disabled':''} onclick="take(${t.id})">${t.status}</button></div>`;g.appendChild(d)})}
+function filterTasks(v,el){current=v;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');render()}
+function openModal(){document.getElementById('modal').classList.add('show')}function closeModal(){document.getElementById('modal').classList.remove('show')}
+function publish(){const title=document.getElementById('title').value.trim();if(!title)return toast('请先填写任务标题');tasks.unshift({id:Date.now(),type:type.value,title,from:from.value||'校内',to:to.value||'校内',price:Number(price.value||5),desc:desc.value,status:'可接单'});save();closeModal();current='全部';render();toast('发布成功，已进入任务大厅')}
+function take(id){const t=tasks.find(x=>x.id===id);if(!t)return;t.status='已接单';save();render();toast('接单成功！请按约定完成任务')}
+function toast(s){const x=document.getElementById('toast');x.textContent=s;x.style.display='block';setTimeout(()=>x.style.display='none',1800)}
+render();
+</script>
+</body>
+</html>
